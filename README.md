@@ -101,6 +101,15 @@ If you find yourself setting the same options for multiple date pickers, you can
     }]);
   ```
 
+### Custom ngModel Form Control Status Indicators
+
+ng-pickADate doesn't cooperate with ngModel's form control status indicators, so the following custom indicators have been added:
+
+- `$pickADateUntouched` - true while date menu hasn't been (opened &) closed yet.
+- `$pickADateTouched` - true once date menu has been (opened &) closed.
+- `$pickADatePristine` - true while date hasn't been changed.
+- `$pickADateDirty` - true once date has been changed.
+
 ### Credits
 
 This project is initially based on a [blog post from Coding Insight](http://www.codinginsight.com/angularjs-and-pickadate/)
