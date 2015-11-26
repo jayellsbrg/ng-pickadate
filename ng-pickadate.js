@@ -10,7 +10,10 @@
   angular.module('pickadate').directive('pickADate', ['$parse', 'pickADate', function ($parse, pickADate) {
     return {
       restrict: 'A',
-      link: function (scope, element, attrs) {
+      require: '?ngModel',
+      link: function (scope, element, attrs, ngModel) {
+        var onSetRunCount = 0;
+        var initOnSetRuns = 3;
         var model = {
           pickADate: $parse(attrs.pickADate),
           minDate: $parse(attrs.minDate),
@@ -22,12 +25,41 @@
         var userOptions = model.pickADateOptions(scope) || {};
         var options = angular.extend({}, defaultOptions, userOptions);
 
+        if (ngModel) {
+          ngModel.$setPickADatePristine = function () {
+            ngModel.$pickADatePristine = true;
+            ngModel.$pickADateDirty = false;
+          }
+          ngModel.$setPickADateDirty = function () {
+            ngModel.$pickADatePristine = false;
+            ngModel.$pickADateDirty = true;
+          }
+          ngModel.$setPickADateUntouched = function () {
+            ngModel.$pickADateUntouched = true;
+            ngModel.$pickADateTouched = false;
+          }
+          ngModel.$setPickADateTouched = function () {
+            ngModel.$pickADateUntouched = false;
+            ngModel.$pickADateTouched = true;
+          }
+
+          ngModel.$setPickADatePristine();
+          ngModel.$setPickADateUntouched();
+        }
+
         options.onSet = function (e) {
           var that = this,
               args = arguments,
               select = element.pickadate('picker').get('select'); // selected date
 
           scope.$evalAsync(function () {
+            if (onSetRunCount < initOnSetRuns) {
+              onSetRunCount += 1;
+            } else {
+              if (ngModel) {
+                ngModel.$setPickADateDirty();
+              }
+            }
             if (e.hasOwnProperty('clear')) {
               model.pickADate.assign(scope, null);
               return;
@@ -52,6 +84,11 @@
         };
 
         options.onClose = function () {
+          if (ngModel) {
+            scope.$applyAsync(function () {
+              ngModel.$setPickADateTouched();
+            });
+          }
           if (userOptions && userOptions.onClose) {
             userOptions.onClose.apply(this, arguments);
           }
@@ -100,7 +137,10 @@
   angular.module('pickadate').directive('pickATime', ['$parse', 'pickATime', function ($parse, pickATime) {
     return {
       restrict: 'A',
-      link: function (scope, element, attrs) {
+      require: '?ngModel',
+      link: function (scope, element, attrs, ngModel) {
+        var onSetRunCount = 0;
+        var initOnSetRuns = 3;
         var model = {
           pickATime: $parse(attrs.pickATime),
           pickATimeOptions: $parse(attrs.pickATimeOptions)
@@ -110,12 +150,41 @@
         var userOptions = model.pickATimeOptions(scope) || {};
         var options = angular.extend({}, defaultOptions, userOptions);
 
+        if (ngModel) {
+          ngModel.$setPickADatePristine = function () {
+            ngModel.$pickADatePristine = true;
+            ngModel.$pickADateDirty = false;
+          }
+          ngModel.$setPickADateDirty = function () {
+            ngModel.$pickADatePristine = false;
+            ngModel.$pickADateDirty = true;
+          }
+          ngModel.$setPickADateUntouched = function () {
+            ngModel.$pickADateUntouched = true;
+            ngModel.$pickADateTouched = false;
+          }
+          ngModel.$setPickADateTouched = function () {
+            ngModel.$pickADateUntouched = false;
+            ngModel.$pickADateTouched = true;
+          }
+
+          ngModel.$setPickADatePristine();
+          ngModel.$setPickADateUntouched();
+        }
+
         options.onSet = function (e) {
           var that = this,
               args = arguments,
               select = element.pickatime('picker').get('select'); // selected date
 
           scope.$evalAsync(function () {
+            if (onSetRunCount < initOnSetRuns) {
+              onSetRunCount += 1;
+            } else {
+              if (ngModel) {
+                ngModel.$setPickADateDirty();
+              }
+            }
             if (e.hasOwnProperty('clear')) {
               model.pickATime.assign(scope, null);
               return;
@@ -143,6 +212,11 @@
         };
 
         options.onClose = function () {
+          if (ngModel) {
+            scope.$applyAsync(function () {
+              ngModel.$setPickADateTouched();
+            });
+          }
           if (userOptions && userOptions.onClose) {
             userOptions.onClose.apply(this, arguments);
           }
