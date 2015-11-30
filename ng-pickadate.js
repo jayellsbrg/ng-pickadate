@@ -56,7 +56,7 @@
             userOptions.onClose.apply(this, arguments);
           }
           if (defaultOptions && defaultOptions.onClose) {
-            defaultOptions.onClose.apply(that, args);
+            defaultOptions.onClose.apply(this, arguments);
           }
           element.blur();
         };
@@ -147,7 +147,7 @@
             userOptions.onClose.apply(this, arguments);
           }
           if (defaultOptions && defaultOptions.onClose) {
-            defaultOptions.onClose.apply(that, args);
+            defaultOptions.onClose.apply(this, arguments);
           }
           element.blur();
         };
