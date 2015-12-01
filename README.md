@@ -105,8 +105,8 @@ If you find yourself setting the same options for multiple date pickers, you can
 
 In order to correct how the pickadate plugin affects `ngModel` states of its assigned input, ng-pickadate uses `ngModelController` to manually restore expected form validation states: `$pristine`, `$dirty`, `$untouched`, and `$touched`. The unexpected angular validation states caused by the pickadate jQuery plugin, and how they've been corrected, are as follows:
 
-- When pickadate is initialized on an input, this triggers the input's `ngModel` to be marked as `$dirty`. -> To correct this, the ng-pickadate directives set `ngModel` to `$pristine` at the end of `postlink`.
-- When pickadate calendar opens, the input itself loses focus and its `ngModel` is marked as `$touched`. -> To correct this, the directives set `ngModel` to `$untouched` the first time the calendar opens, and sets to `$touched` whenever the calendar closes, via pickadate's `onOpen` and `onClose` methods, respectively.
+- When pickadate is initialized on an input, this triggers the input's `ngModel` to be marked as `$dirty`. -> To correct this, the ng-pickadate directives each set `ngModel` to `$pristine` at the end of the `postlink` function.
+- When pickadate calendar opens, the input itself loses focus and its `ngModel` is marked as `$touched`. -> To correct this, the directives set `ngModel` to `$untouched` the first time the calendar opens, and set it to `$touched` whenever the calendar closes, via pickadate's `onOpen` and `onClose` methods, respectively.
 
 ### Credits
 
